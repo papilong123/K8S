@@ -1,0 +1,149 @@
+version: "3"
+services:
+  namenode:
+    image: coomia/hadoop3.2-namenode:0.1
+    container_name: namenode
+    ports:
+      - 9870:9870
+      - 9000:9000
+    environment:
+      - CLUSTER_NAME=coomia-hdp-cluster
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: coomia/hadoop3.2-datanode:0.1
+    container_name: datanode
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    ports:
+      - "9864"
+    env_file:
+      - ./hadoop.env
+  
+  resourcemanager:
+    image: coomia/hadoop3.2-resourcemanager:0.1
+    container_name: resourcemanager
+    ports:
+      - 8088:8088
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+    env_file:
+      - ./hadoop.env
+
+  nodemanager:
+    image: coomia/hadoop3.2-nodemanager:0.1
+    container_name: nodemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./hadoop.env
+  
+  historyserver:
+    image: coomia/hadoop3.2-historyserver:0.1
+    container_name: historyserver
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./hadoop.env
+
+  hive-metastore:
+    image: coomia/hive3.1-hadoop3.2:0.1
+    container_name: hive-metastore
+    volumes:
+      - /data/tools:/tools
+    env_file:
+      - ./hadoop.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 hive-metastore-pg:5432"
+    ports:
+      - "9083:9083"
+  hive-metastore-pg:
+    image: coomia/hive3.1-metastore-pg:0.1
+    container_name: hive-metastore-pg
+  hive-server:
+    image: coomia/hive3.1-hadoop3.2:0.1
+    container_name: hive-server
+    env_file:
+      - ./hadoop.env
+    environment:
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+
+  jobmanager:
+    image: coomia/flink1.11.3-yarn-embedded:0.1
+    container_name: jobmanager
+    expose:
+      - "6123"
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  taskmanager:
+    image: coomia/flink1.11.3-yarn-embedded:0.1
+    container_name: taskmanager
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      
+  hbase-master:
+    image: coomia/hbase2.2:0.1
+    container_name: hbase-master
+    command: master
+    ports:
+      - 16000:16000
+      - 16010:16010
+    # depends_on:
+    #   - zookeeper
+      
+  hbase-regionserver:
+    image: coomia/hbase2.2:0.1
+    container_name: hbase-regionserver
+    command: regionserver
+    ports:
+      - 16030:16030
+      - 16201:16201
+      - 16301:16301
+    depends_on:
+      # - zookeeper
+      - hbase-master
+  hbase-thrift:
+    image: coomia/hbase2.2:0.1
+    container_name: hbase-thrift
+    command: thrift
+    ports:
+      - 9090:9090
+      - 9095:9095
+    # depends_on:
+    #   - zookeeper
+  hbase-stargate:
+    image: coomia/hbase2.2:0.1
+    container_name: hbase-stargate
+    command: stargate
+    ports:
+      - 8080:8080
+      - 8085:8085
+    # depends_on:
+    #   - zookeeper
+
+  prestodb:
+    image: coomia/prestodb:0.1
+    container_name: prestodb
+    ports:
+      - "9999:8080"
+    volumes:
+      - ./conf/standalone:/opt/presto/etc:ro
+      - ./data/presto:/data
+    restart: unless-stopped
