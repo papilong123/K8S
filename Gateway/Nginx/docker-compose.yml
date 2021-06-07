@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ng
+    privileged: true
+    ports:
+      - 12000:80
+      - 14232:443
+    volumes:
+      - ./conf/conf.d:/etc/nginx/conf.d
+      - ./conf:/etc/nginx
+      - ./html:/usr/share/nginx/html
+      - ./logs:/var/log/nginx
+#     networks:
+#       - myweb
+# networks:
+#   myweb:
+#     driver: bridge

@@ -1,0 +1,21 @@
+version: '3'
+ 
+services: 
+  canal-server: 
+    image: canal/canal-server:v1.1.3
+    container_name: canal-server
+    ports: 
+      - 11111:11111
+    environment: 
+      - canal.instance.mysql.slaveId=14
+      - canal.auto.scan=false
+      - canal.destinations=test
+      - canal.mq.topic=test
+      - canal.instance.master.address=localhost:3306
+      - canal.instance.dbUsername=canal
+      - canal.instance.dbPassword=canal
+      # - canal.instance.filter.regex=esen_approval.apt_approval
+      - canal.instance.filter.regex=.*\\..*    # 所有表 http://www.tianshouzhi.com/api/tutorials/canal/402
+    volumes: 
+      - ./canal-server/conf/:/admin/canal-server/conf/
+      - ./canal-server/logs/:/admin/canal-server/logs/
