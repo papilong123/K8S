@@ -10,3 +10,5 @@ gen
 
 awesome-compose/
 kafka-stack-docker-compose/
+docker-compose-lamp/
+example-voting-app/
