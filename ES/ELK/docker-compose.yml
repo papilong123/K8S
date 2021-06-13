@@ -1,12 +1,12 @@
 version: '3'
 services:
   elasticsearch:
-    image: elasticsearch:7.9.1
+    image: elasticsearch:7.13.1
     container_name: es
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m" #设置使用jvm内存大小
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m" #设置使用jvm内存大小
       - bootstrap.memory_lock=true
       - action.destructive_requires_name=true
       - http.cors.enabled=true
@@ -27,7 +27,7 @@ services:
       - 9200:9200
       - 9300:9300
   kibana:
-    image: kibana:7.9.1
+    image: kibana:7.13.1
     container_name: kb
     links:
       - elasticsearch:es #可以用es这个域名访问elasticsearch服务
@@ -35,7 +35,7 @@ services:
       - elasticsearch #kibana在elasticsearch启动之后再启动
     environment:
       - "elasticsearch.hosts=http://es:9200" #设置访问elasticsearch的地址
-      - I18N_LOCALE: zh-CN
+      - "I18N_LOCALE=zh-CN"
     volumes: 
       - ./mydata/kibana/config:/usr/share/kibana/config
       - ./mydata/kibana/data:/usr/share/kibana/data
@@ -43,8 +43,10 @@ services:
     ports:
       - 5601:5601
   logstash:
-    image: logstash:6.4.0
+    image: logstash:7.13.1
     container_name: ls
+    environment: 
+      - "LS_JAVA_OPTS=-Xms256m -Xmx256m" #设置使用jvm内存大小
     volumes:
       - ./mydata/logstash/logstash-springboot.conf:/usr/share/logstash/pipeline/logstash.conf #挂载logstash的配置文件
     depends_on:
