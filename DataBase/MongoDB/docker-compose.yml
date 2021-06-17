@@ -9,10 +9,9 @@ services:
       - ./data/mongo/conf/mongod.conf:/data/mongod.conf
     environment:
       - TZ=Asia/Shanghai
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
     ports:
       - 27017:27017
     user: mongodb:mongodb
     hostname: localhost
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin

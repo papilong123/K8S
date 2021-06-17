@@ -9,3 +9,5 @@ out
 gen
 
 GitHub/
+.vscode/
+CI-CD/Jenkins/data/
