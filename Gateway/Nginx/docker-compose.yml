@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   nginx:
-    image: nginx:stable-alpine
+    image: nginx:1.21.0
     container_name: ng
     privileged: true
     ports:
