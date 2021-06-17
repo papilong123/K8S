@@ -1,14 +1,14 @@
 version: '3.1'
 services:
-        zoo1:
-                image: zookeeper:3.6.3
-                container_name: zoo1
-                ports:
-                        - 2181:2181
-                volumes:
-                        - ./zk-single/data:/data
-                        - ./zk-single/datalog:/datalog
-                        # - ./zk-single/conf:/conf
-                environment:
-                        ZOO_MY_ID: 1
-                        ZOO_SERVERS: server.1=zoo1:2888:3888;2181
+  zoo1:
+    image: zookeeper:3.6.3
+    container_name: zoo1
+    ports:
+      - 2181:2181
+    volumes:
+      - ./zk-single/data:/data
+      - ./zk-single/datalog:/datalog
+      # - ./zk-single/conf:/conf
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181
