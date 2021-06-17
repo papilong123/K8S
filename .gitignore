@@ -11,3 +11,4 @@ gen
 GitHub/
 .vscode/
 CI-CD/Jenkins/data/
+Gateway/Nginx/logs/
