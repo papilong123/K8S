@@ -8,9 +8,9 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./data/mongo/db:/data/db
-      - ./data/mongo/log:/data/log
-      - ./data/mongo/conf/mongod.conf:/data/mongod.conf
+      - ./db:/data/db
+      - ./log:/data/log
+      - ./conf/mongod.conf:/data/mongod.conf
     environment:
       - TZ=Asia/Shanghai
       - MONGO_INITDB_ROOT_USERNAME=admin
