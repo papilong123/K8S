@@ -1,7 +1,7 @@
 version: '3'
 services:
   redis:
-    image: 6.2.4-debian-10-r0
+    image: redis:6.2.4
     container_name: rd
     command: redis-server /etc/redis.conf --appendonly yes
     ports:
