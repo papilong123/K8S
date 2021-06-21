@@ -8,7 +8,7 @@
 out
 gen
 
-GitHub/
-.vscode/
-CI-CD/Jenkins/data/
-Gateway/Nginx/logs/
+/GitHub/
+/.vscode/
+/CI-CD/Jenkins/data/
+/Gateway/Nginx/logs/
