@@ -1,0 +1,173 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rd-pv1
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: rd-sc1
+  hostPath:
+    path: /home/a/workspace/K8S/DataBase/Redis/K8s/data
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rd-pvc1
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: rd-sc1
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rd-conf
+data:
+  redis-config: |+
+    requirepass 123456
+    protected-mode no
+    port 6379
+    tcp-backlog 511
+    timeout 0
+    tcp-keepalive 300
+    daemonize no
+    supervised no
+    pidfile /var/run/redis_6379.pid
+    loglevel notice
+    logfile ""
+    databases 16
+    always-show-logo yes
+    save 900  1
+    save 300 10
+    save 60 10000
+    stop-writes-on-bgsave-error yes
+    rdbcompression yes
+    rdbchecksum yes
+    dbfilename dump.rdb
+    dir /data
+    slave-serve-stale-data yes
+    slave-read-only yes
+    repl-diskless-sync no
+    repl-diskless-sync-delay 5
+    repl-disable-tcp-nodelay no
+    slave-priority 100
+    lazyfree-lazy-eviction no
+    lazyfree-lazy-expire no
+    lazyfree-lazy-server-del no
+    slave-lazy-flush no
+    appendonly no
+    appendfilename "appendonly.aof"
+    appendfsync everysec
+    no-appendfsync-on-rewrite no
+    auto-aof-rewrite-percentage 100
+    auto-aof-rewrite-min-size 64mb
+    aof-load-truncated yes
+    aof-use-rdb-preamble no
+    lua-time-limit 5000
+    slowlog-log-slower-than 10000
+    slowlog-max-len 128
+    latency-monitor-threshold 0
+    notify-keyspace-events Ex
+    hash-max-ziplist-entries 512
+    hash-max-ziplist-value 64
+    list-max-ziplist-size -2
+    list-compress-depth 0
+    set-max-intset-entries 512
+    zset-max-ziplist-entries 128
+    zset-max-ziplist-value 64
+    hll-sparse-max-bytes 3000
+    activerehashing yes
+    client-output-buffer-limit normal 0 0 0
+    client-output-buffer-limit slave 256mb 64mb 60
+    client-output-buffer-limit pubsub 32mb 8mb 60
+    hz 10
+    aof-rewrite-incremental-fsync yes
+    maxmemory 2mb
+    maxmemory-policy allkeys-lru
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: redis
+    spec:
+      containers:
+        - args:
+            - redis-server
+            - /etc/redis/redis.conf
+          image: redis:6.2.4
+          name: rd
+          ports:
+            - containerPort: 6379
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/redis/redis.conf
+              name: rd-config
+              subPath: redis.conf
+            - mountPath: /data
+              name: redis-persistent-storage
+      hostname: localhost
+      restartPolicy: Always
+      volumes:
+        - name: rd-config
+          configMap:
+             name: rd-conf
+             items: 
+               - key: redis-config
+                 path: redis.conf
+        - name: redis-persistent-storage
+          persistentVolumeClaim:
+            claimName: rd-pvc1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  type: NodePort
+  ports:
+    - name: "6379"
+      port: 6379
+      targetPort: 6379
+      nodePort: 30379
+  selector:
+    io.kompose.service: redis
