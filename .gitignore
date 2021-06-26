@@ -12,3 +12,5 @@ GitHub/
 .vscode/
 CI-CD/Jenkins/data/
 Gateway/Nginx/logs/
+DataBase/MongoDB/db/
+DataBase/Redis/compose/data/
