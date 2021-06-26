@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: rd-sc1
   hostPath:
-    path: /home/a/workspace/K8S/DataBase/Redis/K8s/data
+    path: /home/a/workspace/K8S/DataBase/Redis/K8S/data
 ---
 
 apiVersion: v1
