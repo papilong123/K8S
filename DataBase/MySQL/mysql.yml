@@ -4,13 +4,14 @@ metadata:
   name: ms-pv1
 spec:
   capacity:
-    storage: 100Mi
+    storage: 1Gi
   accessModes: 
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ms-sc1
   hostPath:
     path: /home/a/workspace/K8S/DataBase/MySQL/data
+
 ---
 
 apiVersion: v1
@@ -22,7 +23,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 1Gi
   storageClassName: ms-sc1
 
 ---
@@ -68,7 +69,7 @@ spec:
 
 ---
 
-apiVersion:
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -91,10 +92,15 @@ spec:
               value: root
             - name: MYSQL_USER
               value: user
-            - name: MYSQL_PASSWORD
           ports:
             - containerPort: 3306
               name: mysql
+          resources: 
+            requests:
+              cpu: "100m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
           volumeMounts:
             - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
@@ -103,10 +109,11 @@ spec:
               subPath: my.cnf
       volumes:
         - name: mysql-persistent-storage
-          emptyDir: {}
+          persistentVolumeClaim: 
+            claimName: ms-pvc1
         - name: mysql-config
           configMap:
-            name: mysql-db-config
+            name: ms-conf
             items:
               - key: my.cnf
                 path: my.cnf
