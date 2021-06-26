@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-db-config
+  name: ms-conf
   namespace: default
   labels:
     app: mysql-db-config
@@ -50,6 +50,7 @@ data:
     datadir=/var/lib/mysql
     bind-address=0.0.0.0
     symbolic-links=0
+
 ---
 
 apiVersion: v1
@@ -61,9 +62,10 @@ spec:
   ports:
     - port: 3306
       nodePort: 30306
-      targetPort: mysql
+      targetPort: 3306
   selector:
     app: mysql
+
 ---
 
 apiVersion:
@@ -82,7 +84,7 @@ spec:
         app: mysql
     spec:
       containers:
-        - image: mysql:5.7
+        - image: mysql:8.0.25
           name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
@@ -108,4 +110,3 @@ spec:
             items:
               - key: my.cnf
                 path: my.cnf
-

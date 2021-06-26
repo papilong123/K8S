@@ -16,3 +16,4 @@ DataBase/MongoDB/db/
 DataBase/Redis/compose/data/
 DataBase/Redis/compose/redis.log
 DataBase/Redis/data/
+.history/
