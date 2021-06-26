@@ -8,9 +8,16 @@
 out
 gen
 
+<<<<<<< HEAD
 GitHub/
 .vscode/
 CI-CD/Jenkins/data/
 Gateway/Nginx/logs/
 DataBase/MongoDB/db/
 DataBase/Redis/compose/data/
+=======
+/GitHub/
+/.vscode/
+/CI-CD/Jenkins/data/
+/Gateway/Nginx/logs/
+>>>>>>> 2daefa28419b94b1badf43cd9e4f5777649fb77e
