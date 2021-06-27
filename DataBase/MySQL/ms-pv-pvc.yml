@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bit-myms-pv
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: bit-ms
+  hostPath:
+    path: /home/a/workspace/K8S/DataBase/MySQL/ms-chart-data
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-ms-mysql-0
+  labels:
+    app: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: bit-ms

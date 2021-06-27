@@ -1,0 +1,119 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ms-pv1
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ms-sc1
+  hostPath:
+    path: /home/a/workspace/K8S/DataBase/MySQL/data
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ms-pvc1
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ms-sc1
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ms-conf
+  namespace: default
+  labels:
+    app: mysql-db-config
+data:
+  my.cnf: |
+    [client]
+    default-character-set=utf8mb4
+    [mysql]
+    default-character-set=utf8mb4
+    [mysqld]
+    character-set-server = utf8mb4
+    collation-server = utf8mb4_unicode_ci
+    init_connect='SET NAMES utf8mb4'
+    skip-character-set-client-handshake = true
+    max_connections=2000
+    secure_file_priv=/var/lib/mysql
+    datadir=/var/lib/mysql
+    bind-address=0.0.0.0
+    symbolic-links=0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+      nodePort: 30306
+      targetPort: 3306
+  selector:
+    app: mysql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: mysql:8.0.25
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_USER
+              value: user
+          ports:
+            - containerPort: 3306
+              name: mysql
+          resources: 
+            requests:
+              cpu: "100m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+            - name: mysql-config
+              mountPath: /etc/mysql/conf.d/my.cnf
+              subPath: my.cnf
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim: 
+            claimName: ms-pvc1
+        - name: mysql-config
+          configMap:
+            name: ms-conf
+            items:
+              - key: my.cnf
+                path: my.cnf
