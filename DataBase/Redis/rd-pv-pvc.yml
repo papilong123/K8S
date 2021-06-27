@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bit-myrd-pv
+spec:
+  capacity:
+    storage: 50Mi
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: bit-rd
+  hostPath:
+    path: /home/a/workspace/K8S/DataBase/Redis/rd-chart-data
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bit-myrd-pvc
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: bit-rd
