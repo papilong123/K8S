@@ -327,7 +327,7 @@ primary:
     ## Name of existing PVC to hold MySQL Primary data
     ## NOTE: When it's set the rest of persistence parameters are ignored
     ##
-    # existingClaim:
+    existingClaim: data-ms-mysql-0
     ## Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -351,9 +351,6 @@ primary:
     ##   matchLabels:
     ##     app: my-app
     ##
-    selector: 
-      matchLabels:
-        app: mysql
 
   ## Extra volumes to add to the MySQL Primary pod(s)
   ##
