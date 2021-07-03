@@ -73,8 +73,8 @@ auth:
   ## ref: https://github.com/bitnami/bitnami-docker-mysql/blob/master/README.md#creating-a-database-user-on-first-run
   ##
   database: my_database
-  username: "test-db"
-  password: "test-user"
+  username: "test-user"
+  password: "test-password"
   ## MySQL replication user and password
   ## ref: https://github.com/bitnami/bitnami-docker-mysql#setting-up-a-replication-cluster
   ##
