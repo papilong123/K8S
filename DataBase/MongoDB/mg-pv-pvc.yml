@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bit-mymg-pv
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: bit-mg
+  hostPath:
+    path: /home/a/workspace/K8S/DataBase/Mongo/mg-chart-data
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-mg-mongo-0
+  labels:
+    app: mongo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: bit-mg
