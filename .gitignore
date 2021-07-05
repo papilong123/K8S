@@ -16,6 +16,7 @@ DataBase/MongoDB/db/
 DataBase/Redis/compose/data/
 DataBase/Redis/compose/redis.log
 DataBase/Redis/data/
+DataBase/Redis/rd-chart-data/
 .history/
 DataBase/MySQL/compose/data/
 DataBase/MySQL/ms-chart-data/
