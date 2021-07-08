@@ -12,7 +12,7 @@ GitHub/
 .vscode/
 CI-CD/Jenkins/data/
 Gateway/Nginx/logs/
-DataBase/MongoDB/db/
+DataBase/MongoDB/compose/db/
 DataBase/Redis/compose/data/
 DataBase/Redis/compose/redis.log
 DataBase/Redis/data/
