@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: bit-mg
   hostPath:
-    path: /home/a/workspace/K8S/DataBase/Mongo/mg-chart-data
+    path: /home/a/workspace/K8S/DataBase/MongoDB/mg-chart-data
 ---
 
 apiVersion: v1

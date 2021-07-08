@@ -23,3 +23,5 @@ DataBase/MySQL/ms-chart-data/
 DataBase/MySQL/myK8S/data/
 /DataBase/MinIO/data/data/
 /ES/ELK/mydata/elasticsearch/data/
+
+*.tar.gz
