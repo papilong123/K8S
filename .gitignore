@@ -27,6 +27,8 @@ DataBase/MySQL/myK8S/data/
 
 DataBase/MinIO/data/data/
 
+MQ/Kafka/compose/kafka-logs/
+
 /ES/ELK/mydata/elasticsearch/data/
 
 *.tar.gz
