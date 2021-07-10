@@ -32,3 +32,4 @@ MQ/Kafka/compose/kafka-logs/
 /ES/ELK/mydata/elasticsearch/data/
 
 *.tar.gz
+*.tgz
