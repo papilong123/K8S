@@ -116,7 +116,7 @@ log4j:
 existingLog4jConfigMap:
 ## @param heapOpts Kafka's Java Heap size
 ##
-heapOpts: -Xmx1024m -Xms1024m
+heapOpts: -Xmx256m -Xms256m
 ## @param deleteTopicEnable Switch to enable topic deletion or not
 ##
 deleteTopicEnable: false
@@ -738,7 +738,7 @@ persistence:
     - ReadWriteOnce
   ## @param persistence.size PVC Storage Request for Kafka data volume
   ##
-  size: 8Gi
+  size: 100Mi
   ## @param persistence.annotations Annotations for the PVC
   ##
   annotations: {}
