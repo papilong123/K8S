@@ -10,21 +10,15 @@ gen
 
 GitHub/
 .vscode/
-CI-CD/Jenkins/data/
+
 Gateway/Nginx/logs/
 
 DataBase/MongoDB/compose/db/
-DataBase/Redis/compose/data/
-DataBase/Redis/data/
-DataBase/MySQL/compose/data/
-DataBase/MySQL/myK8S/data/
-DataBase/MinIO/data/data/
 
 MQ/Kafka/compose/kafka-logs/
 
-/ES/ELK/mydata/elasticsearch/data/
-
 *chart-data/
+data/
 *.log
 *.tar.gz
 *.tgz
