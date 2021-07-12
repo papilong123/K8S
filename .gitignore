@@ -15,7 +15,6 @@ Gateway/Nginx/logs/
 
 DataBase/MongoDB/compose/db/
 DataBase/Redis/compose/data/
-DataBase/Redis/compose/redis.log
 DataBase/Redis/data/
 DataBase/MySQL/compose/data/
 DataBase/MySQL/myK8S/data/
@@ -26,5 +25,6 @@ MQ/Kafka/compose/kafka-logs/
 /ES/ELK/mydata/elasticsearch/data/
 
 *chart-data/
+*.log
 *.tar.gz
 *.tgz
