@@ -14,19 +14,17 @@ CI-CD/Jenkins/data/
 Gateway/Nginx/logs/
 
 DataBase/MongoDB/compose/db/
-DataBase/MongoDB/mg-chart-data/
-
 DataBase/Redis/compose/data/
 DataBase/Redis/compose/redis.log
 DataBase/Redis/data/
-DataBase/Redis/rd-chart-data/
-
 DataBase/MySQL/compose/data/
-DataBase/MySQL/ms-chart-data/
 DataBase/MySQL/myK8S/data/
-
 DataBase/MinIO/data/data/
+
+MQ/Kafka/compose/kafka-logs/
 
 /ES/ELK/mydata/elasticsearch/data/
 
+*chart-data/
 *.tar.gz
+*.tgz
