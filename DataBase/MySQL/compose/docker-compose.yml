@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql-db:
-    container_name: mysql
+    container_name: ms
     image: mysql:8.0.25
     restart: always
     hostname: localhost
