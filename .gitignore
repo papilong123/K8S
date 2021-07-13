@@ -13,12 +13,11 @@ GitHub/
 
 Gateway/Nginx/logs/
 
-DataBase/MongoDB/compose/db/
-
 MQ/Kafka/compose/kafka-logs/
 
 *chart-data/
 data/
+db/
 *.log
 *.tar.gz
 *.tgz
