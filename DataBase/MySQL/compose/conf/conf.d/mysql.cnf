@@ -13,6 +13,8 @@
 # n的取值范围是1~2的32次方启用二进制日志功能。
 server_id=1
 
+bind-address = 0.0.0.0
+
 # DEMAND关闭查询缓存，默认OFF开启的
 query_cache_type = DEMAND
 
