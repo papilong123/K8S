@@ -1,12 +1,12 @@
 version: '3'
 services:
   mysql-db:
-    container_name: mysql
+    container_name: ms
     image: mysql:8.0.25
     restart: always
     hostname: localhost
     ports:
-      - 3306:3306
+      - 3060:3306
     user: mysql:mysql
     environment:
       MYSQL_ROOT_PASSWORD: root   # root 用户的密码此镜像密码即为root
