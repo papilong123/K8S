@@ -6,7 +6,7 @@ services:
     restart: always
     hostname: localhost
     ports:
-      - 33060:3306
+      - 3306:3306
     user: mysql:mysql
     environment:
       MYSQL_ROOT_PASSWORD: root   # root 用户的密码此镜像密码即为root
